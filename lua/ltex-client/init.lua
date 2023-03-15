@@ -4,6 +4,8 @@ local utils = require("ltex-client.utils")
 local server = require("ltex-client.server")
 local Dictionary = require("ltex-client.dictionary")
 
+local commands = require("ltex-client.commands.all")
+
 -- `user_dictionaries_path` determines a path where dictionaries, excludes and ignores will be saved
 -- Later, I'd like to add `workspace_dictionaries_path` which will be dynamically determined
 -- or accept a callback function.
@@ -37,9 +39,20 @@ function M.setup(options)
 		false_positives,
 	})
 
+	-- Action handlers
 	server.set_handler("addToDictionary", make_handler(dictionary, "words"))
 	server.set_handler("disableRules", make_handler(disabled_rules, "ruleIds"))
 	server.set_handler("hideFalsePositives", make_handler(false_positives, "falsePositives"))
+
+	-- Setting commands
+	vim.api.nvim_create_autocmd({ "BufEnter", "BufWinEnter" }, {
+		pattern = { "*.md" },
+		callback = function()
+			for _, command in ipairs(commands) do
+				vim.api.nvim_create_user_command(command.name, command.handler, {})
+			end
+		end,
+	})
 end
 
 return M
