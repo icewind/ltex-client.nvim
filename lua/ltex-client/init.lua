@@ -45,8 +45,18 @@ function M.setup(options)
 	server.set_handler("hideFalsePositives", make_handler(false_positives, "falsePositives"))
 
 	-- Setting commands
-	vim.api.nvim_create_autocmd({ "BufEnter", "BufWinEnter" }, {
-		pattern = { "*.md" },
+	vim.api.nvim_create_autocmd({ "FileType" }, {
+		pattern = {
+			"bibtex",
+			"context",
+			"context.tex",
+			"html",
+			"latex",
+			"markdown",
+			"org",
+			"restructuredtext",
+			"rsweave",
+		},
 		callback = function()
 			for _, command in ipairs(commands) do
 				vim.api.nvim_create_user_command(command.name, command.handler, {})
