@@ -11,6 +11,15 @@ local default_options = {
 	user_dictionaries_path = utils.path({ vim.env.HOME, ".ltex", "dictionaries" }),
 }
 
+local function make_handler(dictionary, section)
+	return function(command)
+		for language, values in pairs(command.arguments[1][section]) do
+			dictionary:add(language, values)
+		end
+		server.update_configuration({ [dictionary.name] = dictionary.content })
+	end
+end
+
 function M.setup(options)
 	options = vim.tbl_extend("keep", options or {}, default_options)
 	utils.ensure_folder(options.user_dictionaries_path)
@@ -28,26 +37,9 @@ function M.setup(options)
 		false_positives,
 	})
 
-	server.set_handler("addToDictionary", function(command)
-		for language, words in pairs(command.arguments[1].words) do
-			dictionary:add(language, words)
-		end
-		server.update_dictionary(dictionary)
-	end)
-
-	server.set_handler("disableRules", function(command)
-		for language, rules in pairs(command.arguments[1].ruleIds) do
-			disabled_rules:add(language, rules)
-		end
-		server.update_dictionary(disabled_rules)
-	end)
-
-	server.set_handler("hideFalsePositives", function(command)
-		for language, falsy in pairs(command.arguments[1].falsePositives) do
-			false_positives:add(language, falsy)
-		end
-		server.update_dictionary(false_positives)
-	end)
+	server.set_handler("addToDictionary", make_handler(dictionary, "words"))
+	server.set_handler("disableRules", make_handler(disabled_rules, "ruleIds"))
+	server.set_handler("hideFalsePositives", make_handler(false_positives, "falsePositives"))
 end
 
 return M

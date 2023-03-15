@@ -24,6 +24,19 @@ function Server.update_dictionary(source)
 	client.notify("workspace/didChangeConfiguration", client.config.settings)
 end
 
+function Server.update_configuration(values)
+	local client = get_client()
+	if client == nil then
+		vim.notify("Ltex-ls is not loaded for the current buffer", vim.log.levels.WARN)
+		return
+	end
+	if client.config.settings.ltex == nil then
+		client.config.settings.ltex = {}
+	end
+	vim.tbl_deep_extend("force", client.config.settings.ltex, values)
+	client.notify("workspace/didChangeConfiguration", client.config.settings)
+end
+
 function Server.set_startup_configuration(dictionaries)
 	local name = "workspace/configuration"
 	local existing_handler = vim.lsp.handlers[name]
