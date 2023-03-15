@@ -6,6 +6,8 @@ Small plugin that adds handlers for code actions fired by [LT<sub>E</sub>X Langu
 -   Disable rule
 -   Hide false positive
 
+and a command to set the language for the current document `:LTeXSetLanguage`
+
 ## Installation
 
 First, you have to make sure [LT<sub>E</sub>X Language Server](https://github.com/valentjn/ltex-ls) is installed and configured. Please follow the instructions on the ltex-ls page. Please refer to [my configuration](https://github.com/icewind/nvim) for the example. Then, this plugin could be installed like this:
