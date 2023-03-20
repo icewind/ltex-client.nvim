@@ -42,6 +42,9 @@ function Server.set_startup_configuration(dictionaries)
 		for _, value in ipairs(dictionaries) do
 			config[value.name] = value.content
 		end
+
+		-- Get initial configuration from the client(possibly defined in lspconfig)
+		update_config(existing_handler(err, msg, info)[1])
 		return update_config(config)
 	end
 end
