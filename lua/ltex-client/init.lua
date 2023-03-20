@@ -49,15 +49,15 @@ function M.setup(options)
 		-- These are default values taken from https://valentjn.github.io/ltex/settings.html#ltexenabled
 		-- TODO: Check if I can dynamically load these from ltex-ls settings
 		pattern = {
-			"bibtex",
-			"context",
-			"context.tex",
-			"html",
-			"latex",
+			"bib",
+			"gitcommit",
 			"markdown",
 			"org",
-			"restructuredtext",
-			"rsweave",
+			"plaintex",
+			"rst",
+			"rnoweb",
+			"tex",
+			"pandoc",
 		},
 		callback = function()
 			for _, command in ipairs(commands) do
