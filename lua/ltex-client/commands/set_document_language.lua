@@ -67,7 +67,7 @@ return {
 				vim.notify(string.format(UNSUPPORTED_LANG_MESSAGE, code), vim.log.levels.ERROR)
 				return
 			end
-			server.update_configuration({ language = value })
+			server.update_configuration({ language = code })
 		end)
 	end,
 }
