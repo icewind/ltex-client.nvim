@@ -2,7 +2,7 @@ local Server = {}
 
 local current_configuration = {}
 
-local function update_config(new_values)
+local function update_local_config(new_values)
 	current_configuration = vim.tbl_deep_extend("force", current_configuration, new_values)
 	return current_configuration
 end
@@ -26,26 +26,27 @@ function Server.update_configuration(values)
 	if client.config.settings.ltex == nil then
 		client.config.settings.ltex = {}
 	end
-	client.config.settings.ltex = vim.tbl_deep_extend("force", client.config.settings.ltex, update_config(values))
+	client.config.settings.ltex = vim.tbl_deep_extend("force", client.config.settings.ltex, update_local_config(values))
 	client.notify("workspace/didChangeConfiguration", client.config.settings)
 end
 
 function Server.set_startup_configuration(dictionaries)
 	local name = "workspace/configuration"
 	local existing_handler = vim.lsp.handlers[name]
-	vim.lsp.handlers[name] = function(err, msg, info)
-		local client = vim.lsp.get_client_by_id(info.client_id)
+	vim.lsp.handlers[name] = function(err, result, ctx, config)
+		local client = vim.lsp.get_client_by_id(ctx.client_id)
 		if client == nil or client.name ~= "ltex" then
-			return existing_handler(err, msg, info)
+			return existing_handler(err, result, ctx, config)
 		end
-		local config = {}
+		local options = {}
 		for _, value in ipairs(dictionaries) do
-			config[value.name] = value.content
+			options[value.name] = value.content
 		end
-
-		-- Get initial configuration from the client(possibly defined in lspconfig)
-		update_config(existing_handler(err, msg, info)[1])
-		return update_config(config)
+		if config ~= nil then
+			-- Reading configuration values from nvim lsp config
+			update_local_config(config)
+		end
+		return update_local_config(options)
 	end
 end
 
