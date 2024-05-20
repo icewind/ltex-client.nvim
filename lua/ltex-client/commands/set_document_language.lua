@@ -1,3 +1,4 @@
+-- Command to override a document language
 local server = require("ltex-client.server")
 
 -- The list taken from https://valentjn.github.io/ltex/settings.html#ltexlanguage

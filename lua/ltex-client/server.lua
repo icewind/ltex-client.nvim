@@ -10,6 +10,9 @@ end
 -- Get ltex language server
 local function get_client()
 	local _, client = next(vim.lsp.get_active_clients({ name = "ltex" }))
+	if client == nil then
+		vim.notify("Ltex-ls is not loaded for the current buffer", vim.log.levels.WARN)
+	end
 	return client
 end
 
@@ -20,7 +23,6 @@ end
 function Server.update_configuration(values)
 	local client = get_client()
 	if client == nil then
-		vim.notify("Ltex-ls is not loaded for the current buffer", vim.log.levels.WARN)
 		return
 	end
 	if client.config.settings.ltex == nil then
@@ -48,6 +50,23 @@ function Server.set_startup_configuration(dictionaries)
 		end
 		return update_local_config(options)
 	end
+end
+
+function Server.status(callback)
+	local client = get_client()
+	if client == nil then
+		return
+	end
+	client.request(
+		"workspace/executeCommand",
+		{ command = "_ltex.getServerStatus", arguments = {} },
+		function(err, status)
+			if err ~= nil then
+				vim.notify(string.format("Error executing status command: %s", err), vim.log.levels.WARN)
+			end
+			callback(status)
+		end
+	)
 end
 
 -- Set the handler for ltex-specific command
