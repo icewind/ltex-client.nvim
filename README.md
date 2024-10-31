@@ -8,7 +8,7 @@ Small plugin that adds handlers for code actions fired by [LT<sub>E</sub>X Langu
 
 ## Installation
 
-First, you have to make sure [LT<sub>E</sub>X Language Server](https://github.com/valentjn/ltex-ls) is installed and configured. Please follow the instructions on the ltex-ls page. Please refer to [my configuration](https://github.com/icewind/nvim) for the example. Then, this plugin could be installed like this:
+First, you have to make sure [LT<sub>E</sub>X Language Server](https://github.com/valentjn/ltex-ls) is installed and configured. Please follow the instructions on the ltex-ls page. Please refer to [my configuration](https://github.com/icewind/dotfiles) for the example. Then, this plugin could be installed like this:
 
 Using [packer](https://github.com/wbthomason/packer.nvim):
 
@@ -22,11 +22,11 @@ Or [lazy](https://github.com/folke/lazy.nvim):
 return {
     "icewind/ltex-client.nvim",
     event = { "BufReadPre", "BufNewFile" },
-    config = true,
+    opts = {},
 }
 ```
 
-Please pay attention, that you have to either call setup function manually, or provide `opts` with any truthy value, so lazy.nvim will call it automatically.
+Please pay attention, in order to call the setup, lazy.nvim requires `opts` key to be any truthy value.
 
 ## Configuration
 
@@ -42,11 +42,9 @@ In case you're using lazy.nvim, and default configuration works for you, there i
 return {
     "icewind/ltex-client.nvim",
     event = { "BufReadPre", "BufNewFile" },
-    config = function() 
-        require("ltex-client").setup({
-            user_dictionaries_path = vim.env.HOME .. 'some/other/path'
-        })
-    end
+    opts = {
+        user_dictionaries_path = vim.env.HOME .. 'some/other/path'
+    }
 }
 ```
 
@@ -71,7 +69,7 @@ return {
     },
     {
         "icewind/ltex-client.nvim",
-        config = true
+        opts = {},
     },
 }
 ```
