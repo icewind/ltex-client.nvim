@@ -53,7 +53,7 @@ return {
 | Command | Description |
 | --- | --- |
 |`:LTeXSetLanguage`| Sets the language for the current document |
-|`:LTexStatus`| Shows a floating window with a status from LTeX-ls|
+|`:LTeXStatus`| Shows a floating window with a status from LTeX-ls|
 
 ## Hints
 
