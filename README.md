@@ -1,6 +1,6 @@
 # LT<sub>E</sub>X LS Client for NeoVim
 
-Small plugin that adds handlers for code actions fired by [LT<sub>E</sub>X Language Server](https://github.com/valentjn/ltex-ls):
+Small plugin that adds handlers for code actions fired by [LT<sub>E</sub>X Language Server Plus (Recommended)](https://github.com/ltex-plus/ltex-ls-plus) or legacy [LT<sub>E</sub>X Language Server](https://github.com/valentjn/ltex-ls):
 
 -   Add to dictionary
 -   Disable rule
@@ -8,7 +8,7 @@ Small plugin that adds handlers for code actions fired by [LT<sub>E</sub>X Langu
 
 ## Installation
 
-First, you have to make sure [LT<sub>E</sub>X Language Server](https://github.com/valentjn/ltex-ls) is installed and configured. Please follow the instructions on the ltex-ls page. Please refer to [my configuration](https://github.com/icewind/dotfiles) for the example. Then, this plugin could be installed like this:
+First, you have to make sure [LT<sub>E</sub>X Language Server plus](https://github.com/ltex-plus/ltex-ls-plus) is installed and configured. Please follow the instructions on the ltex-ls-plus page. Please refer to [my configuration](https://github.com/icewind/dotfiles) for the example. Then, this plugin could be installed like this:
 
 Using [packer](https://github.com/wbthomason/packer.nvim):
 
@@ -62,7 +62,7 @@ In order to make sure ltex-client is installed along with LTeX-ls, for lazy.nvim
 ```lua
 return {
     { 
-        "williamboman/mason.nvim",
+        "mason-org/mason.nvim",
         opts = function(_, opts)
             vim.list_extend(opts.ensure_installed, { "ltex-ls" })
         end,

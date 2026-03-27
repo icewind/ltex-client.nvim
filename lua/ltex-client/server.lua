@@ -9,11 +9,23 @@ end
 
 -- Get ltex language server
 local function get_client()
-	local _, client = next(vim.lsp.get_active_clients({ name = "ltex" }))
-	if client == nil then
-		vim.notify("Ltex-ls is not loaded for the current buffer", vim.log.levels.WARN)
+	local clients = vim.tbl_filter(function(client)
+		return vim.startswith(client.name, "ltex")
+	end, vim.lsp.get_clients({ bufnr = vim.api.nvim_get_current_buf() }))
+
+	if #clients > 1 then
+		vim.notify(
+			"There are two instances of ltex connected to current buffer. That could lead to unexpected behaviour",
+			vim.log.levels.WARN
+		)
+		return nil
 	end
-	return client
+
+	if #clients == 0 then
+		vim.notify("Neigher ltex-ls-plus nor ltex-ls are not loaded for the current buffer", vim.log.levels.WARN)
+	end
+
+	return clients[1]
 end
 
 function Server.is_loaded()
