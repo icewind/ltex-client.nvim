@@ -46,18 +46,22 @@ function M.setup(options)
 
 	-- Setting commands
 	vim.api.nvim_create_autocmd({ "FileType" }, {
-		-- These are default values taken from https://valentjn.github.io/ltex/settings.html#ltexenabled
-		-- TODO: Check if I can dynamically load these from ltex-ls settings
+		-- These are default values taken from https://ltex-plus.github.io/ltex-plus/settings.html#ltexenabled
 		pattern = {
-			"bib",
-			"gitcommit",
+			"bibtex",
+			"context",
+			"context.tex",
+			"html",
+			"latex",
 			"markdown",
+			"mdx",
+			"typst",
+			"asciidoc",
+			"neorg",
 			"org",
-			"plaintex",
-			"rst",
-			"rnoweb",
-			"tex",
-			"pandoc",
+			"quarto",
+			"restructuredtext",
+			"rsweave",
 		},
 		callback = function()
 			for _, command in ipairs(commands) do
